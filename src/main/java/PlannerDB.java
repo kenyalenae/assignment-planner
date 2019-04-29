@@ -1,5 +1,7 @@
 // planner database class
 
+import org.sqlite.core.DB;
+
 import java.sql.*;
 import java.util.Date;
 import java.text.ParseException;
@@ -9,8 +11,9 @@ import java.util.Vector;
 
 public class PlannerDB {
 
-    private static final String DB_URL = "jdbc:sqlite:planner.sqlite";
+    private static final String DB_URL = "jdbc:sqlite:planner.sqlite"; // database url
 
+    // strings to hold database information
     private static final String TABLE_NAME = "planner";
     private static final String ID_COL = "id";
     private static final String CLASS_NAME_COL = "class_name";
@@ -20,6 +23,7 @@ public class PlannerDB {
 
     PlannerDB() { createTable(); }
 
+    // create table
     private void createTable() {
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
@@ -32,10 +36,24 @@ public class PlannerDB {
                     CLASS_CODE_COL, ASSIGNMENT_COL, DUE_DATE_COL);
 
             statement.execute(createTableSQL);
+            System.out.println("Created planner table");
 
         } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
         }
+
+    }
+
+    Vector getColumnNames() {
+
+        Vector colNames = new Vector();
+        colNames.add("ID");
+        colNames.add("CLASS NAME");
+        colNames.add("CLASS CODE");
+        colNames.add("ASSIGNMENT");
+        colNames.add("DUE DATE");
+
+        return colNames;
 
     }
 
@@ -75,16 +93,39 @@ public class PlannerDB {
                     pe.printStackTrace();
                 }
 
-
             }
 
-            rsAll.close();
+            rsAll.close(); // close result set
 
-            return allAssignments;
+            return allAssignments; // return vector of assignments
 
         } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
         }
+
+
+    }
+
+    public void addAssignment(Assignment assignment) {
+
+        String addSql = "INSERT INTO " + TABLE_NAME + " VALUES (?,?,?,?)";
+
+
+        try (Connection connection = DriverManager.getConnection(DB_URL);
+        PreparedStatement preparedStatement = connection.prepareStatement(addSql)) {
+
+            preparedStatement.setString(1, assignment.getClassName());
+            preparedStatement.setInt(2, assignment.getClassCode());
+            preparedStatement.setString(3, assignment.getAssignment());
+            preparedStatement.setString(4, assignment.getDate().toString()); // convert date to string format
+
+            preparedStatement.executeUpdate();
+
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
 
 
     }
