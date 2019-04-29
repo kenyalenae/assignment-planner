@@ -1,8 +1,6 @@
 // planner database class
 
 import java.sql.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 
@@ -38,6 +36,7 @@ public class PlannerDB {
 
     }
 
+    // get all assignments in database
     Vector<Assignment> getAllAssignments() {
 
         // vector to hold assignments
@@ -53,23 +52,19 @@ public class PlannerDB {
             // while there are rows in table, add data to assignments vector
             while (rsAll.next()) {
                 // get data from columns
-                try {
-                    String className = rsAll.getString(CLASS_NAME_COL);
-                    int classCode = rsAll.getInt(CLASS_CODE_COL);
-                    String assignment = rsAll.getString(ASSIGNMENT_COL);
-                    String dateString = rsAll.getString(DUE_DATE_COL);
 
-                    // convert date string to date
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-                    Date date = formatter.parse(dateString); // TODO unhandled exception ParseException
+                String className = rsAll.getString(CLASS_NAME_COL);
+                int classCode = rsAll.getInt(CLASS_CODE_COL);
+                String assignment = rsAll.getString(ASSIGNMENT_COL);
+                String dateString = rsAll.getString(DUE_DATE_COL);
 
-                    // create assignment using data from table
-                    Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
-                    // add assignment to vector of assignments
-                    allAssignments.add(assignmentRecord);
-                } catch (ParseException e ) {
-                    e.printStackTrace();
-                }
+                // convert date from String to Date format
+                Date dueDate = new Date(dateString);
+
+                // create assignment using data from table
+                Assignment assignmentRecord = new Assignment(className, classCode, assignment, dueDate);
+                // add assignment to vector of assignments
+                allAssignments.add(assignmentRecord);
 
             }
 
