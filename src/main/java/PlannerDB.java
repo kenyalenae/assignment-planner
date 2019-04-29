@@ -1,6 +1,9 @@
 // planner database class
 
 import java.sql.*;
+import java.util.Date;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 
@@ -53,18 +56,25 @@ public class PlannerDB {
             while (rsAll.next()) {
                 // get data from columns
 
-                String className = rsAll.getString(CLASS_NAME_COL);
-                int classCode = rsAll.getInt(CLASS_CODE_COL);
-                String assignment = rsAll.getString(ASSIGNMENT_COL);
-                String dateString = rsAll.getString(DUE_DATE_COL);
+                try {
+                    String className = rsAll.getString(CLASS_NAME_COL);
+                    int classCode = rsAll.getInt(CLASS_CODE_COL);
+                    String assignment = rsAll.getString(ASSIGNMENT_COL);
+                    String dateString = rsAll.getString(DUE_DATE_COL);
 
-                // convert date from String to Date format
-                Date dueDate = new Date(dateString);
+                    // convert due date from String to Date format
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    Date dueDate = formatter.parse(dateString);
 
-                // create assignment using data from table
-                Assignment assignmentRecord = new Assignment(className, classCode, assignment, dueDate);
-                // add assignment to vector of assignments
-                allAssignments.add(assignmentRecord);
+                    // create assignment using data from table
+                    Assignment assignmentRecord = new Assignment(className, classCode, assignment, dueDate);
+                    // add assignment to vector of assignments
+                    allAssignments.add(assignmentRecord);
+
+                } catch (ParseException pe) {
+                    pe.printStackTrace();
+                }
+
 
             }
 
