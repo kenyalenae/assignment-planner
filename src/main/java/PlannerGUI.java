@@ -5,6 +5,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -98,6 +100,15 @@ public class PlannerGUI extends JFrame {
                 String dateString = dueDateSpinner.getValue().toString();
                 // TODO convert string date to date format
                 int code;
+                Date dueDate = new Date();
+
+                try {
+                    // convert due date from String to Date format
+                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    dueDate = formatter.parse(dateString);
+                } catch (ParseException pe) {
+                    pe.printStackTrace();
+                }
 
                 if (name.isEmpty() || classAssignment.isEmpty()) {
                     errorDiolog("Make sure all fields are not empty.");
@@ -106,10 +117,18 @@ public class PlannerGUI extends JFrame {
 
                 try {
                     code = Integer.parseInt(classCode.getText());
+                    if (code <= 0) {
+                        errorDiolog("Please enter positive number for class code.");
+                    }
+
                 } catch (NumberFormatException nfe) {
-                    errorDiolog("Enter a positive number for class code");
+                    errorDiolog("Enter a number for class code.");
                     return;
                 }
+
+                Assignment assignmentRecord = new Assignment(name, code, classAssignment, dueDate);
+                controller.addAssignment(assignmentRecord);
+                updateTable();
 
             }
         });
