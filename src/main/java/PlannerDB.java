@@ -74,24 +74,26 @@ public class PlannerDB {
             while (rsAll.next()) {
                 // get data from columns
 
-                try {
+//                try {
                     String className = rsAll.getString(CLASS_NAME_COL);
                     int classCode = rsAll.getInt(CLASS_CODE_COL);
                     String assignment = rsAll.getString(ASSIGNMENT_COL);
                     String dateString = rsAll.getString(DUE_DATE_COL);
 
                     // convert due date from String to Date format
-                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-                    Date dueDate = formatter.parse(dateString);
+//                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+//                    Date dueDate = formatter.parse(dateString);
+//
+                    Date date = new Date(dateString);
 
                     // create assignment using data from table
-                    Assignment assignmentRecord = new Assignment(className, classCode, assignment, dueDate);
+                    Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
                     // add assignment to vector of assignments
                     allAssignments.add(assignmentRecord);
 
-                } catch (ParseException pe) {
-                    pe.printStackTrace();
-                }
+//                } catch (ParseException pe) {
+//                    pe.printStackTrace();
+//                }
 
             }
 
