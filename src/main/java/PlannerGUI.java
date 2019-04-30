@@ -31,16 +31,17 @@ public class PlannerGUI extends JFrame {
 
     PlannerGUI(Controller controller) {
 
-        this.controller = controller; // store a reference to the controller object
+        // store a reference to the controller object
+        this.controller = controller;
 
-        //dateSpinner model & editor set up
+        // dateSpinner model and editor set up
         dueDateSpinner.setModel(new SpinnerDateModel());
         dueDateSpinner.setEditor(new JSpinner.DateEditor(dueDateSpinner, "MM-dd-yyyy"));
 
         // configure JTable
         configureTable();
 
-        // TODO add listeners
+        // add listeners
         addListeners();
 
         // GUI set up
@@ -52,6 +53,7 @@ public class PlannerGUI extends JFrame {
 
     }
 
+    // configure and set up the JTable
     private void configureTable() {
 
         // set up JTable
@@ -67,7 +69,7 @@ public class PlannerGUI extends JFrame {
         tableModel = new DefaultTableModel(data, columnNames) {
 //            @Override
 //            public boolean isCellEditable(int row, int col) {
-//                return (col == 3); // assignment and due date columns
+//                return (col == 3); // assignment column
 //            }
 //
 //            @Override
@@ -84,11 +86,11 @@ public class PlannerGUI extends JFrame {
 
         };
 
-
         plannerTable.setModel(tableModel);
 
     }
 
+    // method to update table when user makes changes such as add/update/delete
     private void updateTable() {
 
         Vector data = controller.getAllAssignments();
@@ -98,22 +100,25 @@ public class PlannerGUI extends JFrame {
 
     private void addListeners() {
 
+        // add assignment listener
         addAssignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                // get user input
                 String name = className.getText();
                 String classAssignment = assignment.getText();
                 Date dueDate = (Date) dueDateSpinner.getValue();
-
                 int code;
 
+                // if name or assignment field are empty, show error dialog
                 if (name.isEmpty() || classAssignment.isEmpty()) {
                     errorDiolog("Make sure all fields are not empty.");
                     return;
                 }
 
                 try {
+                    // if class code is not positive number, show error dialog
                     code = Integer.parseInt(classCode.getText());
                     if (code <= 0) {
                         errorDiolog("Please enter positive number for class code.");
@@ -124,8 +129,11 @@ public class PlannerGUI extends JFrame {
                     return;
                 }
 
+                // create assignment using user entered information
                 Assignment assignmentRecord = new Assignment(name, code, classAssignment, dueDate);
+                // add assignment to database
                 controller.addAssignment(assignmentRecord);
+                // update JTable
                 updateTable();
 
             }

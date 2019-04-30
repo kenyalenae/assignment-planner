@@ -19,14 +19,17 @@ public class Controller {
         gui = new PlannerGUI(this);
     }
 
+    // get all assignments in database
     Vector<Assignment> getAllAssignments() {
         return db.getAllAssignments();
     }
 
+    // get column names for JTable in GUI
     Vector getColumnNames() {
         return db.getColumnNames();
     }
 
+    // add new assignment to database
     void addAssignment(Assignment assignment) {
         db.addAssignment(assignment);
     }

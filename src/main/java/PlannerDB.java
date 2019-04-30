@@ -44,6 +44,7 @@ public class PlannerDB {
 
     }
 
+    // column names for JTable in GUI
     Vector getColumnNames() {
 
         Vector colNames = new Vector();
@@ -72,28 +73,19 @@ public class PlannerDB {
 
             // while there are rows in table, add data to assignments vector
             while (rsAll.next()) {
+
                 // get data from columns
+                String className = rsAll.getString(CLASS_NAME_COL);
+                int classCode = rsAll.getInt(CLASS_CODE_COL);
+                String assignment = rsAll.getString(ASSIGNMENT_COL);
+                String dateString = rsAll.getString(DUE_DATE_COL);
+                // convert date string to Date
+                Date date = new Date(dateString);
 
-//                try {
-                    String className = rsAll.getString(CLASS_NAME_COL);
-                    int classCode = rsAll.getInt(CLASS_CODE_COL);
-                    String assignment = rsAll.getString(ASSIGNMENT_COL);
-                    String dateString = rsAll.getString(DUE_DATE_COL);
-
-                    // convert due date from String to Date format
-//                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
-//                    Date dueDate = formatter.parse(dateString);
-//
-                    Date date = new Date(dateString);
-
-                    // create assignment using data from table
-                    Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
-                    // add assignment to vector of assignments
-                    allAssignments.add(assignmentRecord);
-
-//                } catch (ParseException pe) {
-//                    pe.printStackTrace();
-//                }
+                // create assignment using data from table
+                Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
+                // add assignment to vector of assignments
+                allAssignments.add(assignmentRecord);
 
             }
 
@@ -108,16 +100,16 @@ public class PlannerDB {
 
     }
 
+    // add assignment to database
     public void addAssignment(Assignment assignment) {
 
-        // String addSql = "INSERT INTO " + TABLE_NAME + " VALUES (?,?,?,?)";
-
+        // sql statement to add assignment
         String addAssignmentSql = "INSERT INTO planner (class_name, class_code, assignment, due_date) VALUES (?,?,?,?)";
-
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
         PreparedStatement preparedStatement = connection.prepareStatement(addAssignmentSql)) {
 
+            // prepared statements
             preparedStatement.setString(1, assignment.getClassName());
             preparedStatement.setInt(2, assignment.getClassCode());
             preparedStatement.setString(3, assignment.getAssignment());
