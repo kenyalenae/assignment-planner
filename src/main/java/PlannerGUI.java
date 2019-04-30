@@ -2,11 +2,14 @@
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Vector;
 
@@ -30,7 +33,10 @@ public class PlannerGUI extends JFrame {
 
         this.controller = controller; // store a reference to the controller object
 
-        // TODO configure JTable
+        // date spinner method used from lab 8
+        configureDateSpinner();
+
+        // configure JTable
         configureTable();
 
         // TODO add listeners
@@ -97,15 +103,25 @@ public class PlannerGUI extends JFrame {
 
                 String name = className.getText();
                 String classAssignment = assignment.getText();
-                String dateString = dueDateSpinner.getValue().toString();
+                //String dateString = dueDateSpinner.getValue().toString();
                 // TODO convert string date to date format
                 int code;
                 Date dueDate = new Date();
 
                 try {
                     // convert due date from String to Date format
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
-                    dueDate = formatter.parse(dateString);
+                    //SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
+                    //dueDate = formatter.parse(dateString);
+
+                    // convert serviceDateSpinner to proper date format
+                    String startDate = dueDateSpinner.getValue().toString();
+                    DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Date date = formatter.parse(startDate);
+                    SimpleDateFormat newFormat = new SimpleDateFormat("MM-dd-yyyy");
+                    String finalDate = newFormat.format(date);
+                    dueDate = newFormat.parse(finalDate);
+                    System.out.println(dueDate);
+
                 } catch (ParseException pe) {
                     pe.printStackTrace();
                 }
@@ -132,6 +148,25 @@ public class PlannerGUI extends JFrame {
 
             }
         });
+
+    }
+
+    // used this date spinner method from lab 8
+    private void configureDateSpinner() {
+
+        // Dates between Jan 1, 1970 and some time in 2920. I don't suppose this program will be around this long though...
+        SpinnerDateModel spinnerDateModel = new SpinnerDateModel(new Date(), new Date(0), new Date(30000000000000L), Calendar.DAY_OF_YEAR);
+        dueDateSpinner.setModel(spinnerDateModel);
+        // Create a DateEditor to configure the way dates are displayed and edited
+        // Define format the dates will have
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(dueDateSpinner, "MM-dd-yyyy");
+        DateFormatter formatter = (DateFormatter) editor.getTextField().getFormatter();
+        // Attempt to prevent invalid input
+        formatter.setAllowsInvalid(false);
+        // Allow user to type as well as use up/down buttons
+        formatter.setOverwriteMode(true);
+        // And tell the serviceDataSpinner to use this Editor
+        dueDateSpinner.setEditor(editor);
 
     }
 

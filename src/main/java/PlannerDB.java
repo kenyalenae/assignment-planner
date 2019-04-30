@@ -81,7 +81,7 @@ public class PlannerDB {
                     String dateString = rsAll.getString(DUE_DATE_COL);
 
                     // convert due date from String to Date format
-                    SimpleDateFormat formatter = new SimpleDateFormat("dd-MMM-yyyy");
+                    SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-yyyy");
                     Date dueDate = formatter.parse(dateString);
 
                     // create assignment using data from table
@@ -108,11 +108,13 @@ public class PlannerDB {
 
     public void addAssignment(Assignment assignment) {
 
-        String addSql = "INSERT INTO " + TABLE_NAME + " VALUES (?,?,?,?)";
+        // String addSql = "INSERT INTO " + TABLE_NAME + " VALUES (?,?,?,?)";
+
+        String addAssignmentSql = "INSERT INTO planner (class_name, class_code, assignment, due_date) VALUES (?,?,?,?)";
 
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
-        PreparedStatement preparedStatement = connection.prepareStatement(addSql)) {
+        PreparedStatement preparedStatement = connection.prepareStatement(addAssignmentSql)) {
 
             preparedStatement.setString(1, assignment.getClassName());
             preparedStatement.setInt(2, assignment.getClassCode());
