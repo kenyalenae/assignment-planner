@@ -36,11 +36,8 @@ public class PlannerGUI extends JFrame {
         // store a reference to the controller object
         this.controller = controller;
 
-        // dateSpinner model and editor set up
-        dueDateSpinner.setModel(new SpinnerDateModel());
-        dueDateSpinner.setEditor(new JSpinner.DateEditor(dueDateSpinner, "MM-dd-yyyy"));
-        // TODO - figure out why date isn't saving in format above
-        // TODO - if user deletes date, it enters today's date but should show error dialog
+        // configure dateSpinner
+        configureDateSpinner();
 
         // configure JTable
         configureTable();
@@ -65,6 +62,9 @@ public class PlannerGUI extends JFrame {
 
         // enable sorting
         plannerTable.setAutoCreateRowSorter(true);
+
+        // TODO auto resize columns - this isn't currently working
+        plannerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         columnNames = controller.getColumnNames();
         Vector<Vector> data = controller.getAllAssignments();
@@ -177,6 +177,23 @@ public class PlannerGUI extends JFrame {
 
     }
 
+    private void configureDateSpinner() {
+
+        // Dates between Jan 1, 1970 and some time in 2920. I don't suppose this program will be around this long though...
+        SpinnerDateModel spinnerDateModel = new SpinnerDateModel(new Date(), new Date(0), new Date(30000000000000L), Calendar.DAY_OF_YEAR);
+        dueDateSpinner.setModel(spinnerDateModel);
+        // Create a DateEditor to configure the way dates are displayed and edited
+        // Define format the dates will have
+        JSpinner.DateEditor editor = new JSpinner.DateEditor(dueDateSpinner, "MM-dd-yyyy");
+        DateFormatter formatter = (DateFormatter) editor.getTextField().getFormatter();
+        // Attempt to prevent invalid input
+        formatter.setAllowsInvalid(false);
+        // Allow user to type as well as use up/down buttons
+        formatter.setOverwriteMode(true);
+        // And tell the serviceDataSpinner to use this Editor
+        dueDateSpinner.setEditor(editor);
+
+    }
 
     // error dialog to use if user enters invalid data
     private void errorDiolog(String msg) {
