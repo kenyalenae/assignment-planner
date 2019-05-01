@@ -37,6 +37,8 @@ public class PlannerGUI extends JFrame {
         // dateSpinner model and editor set up
         dueDateSpinner.setModel(new SpinnerDateModel());
         dueDateSpinner.setEditor(new JSpinner.DateEditor(dueDateSpinner, "MM-dd-yyyy"));
+        // TODO - figure out why date isn't saving in format above
+        // TODO - if user deletes date, it enters today's date but should show error dialog
 
         // configure JTable
         configureTable();
@@ -63,10 +65,11 @@ public class PlannerGUI extends JFrame {
         plannerTable.setAutoCreateRowSorter(true);
 
         columnNames = controller.getColumnNames();
-        Vector data = controller.getAllAssignments();
+        Vector<Vector<Assignment>> data = controller.getAllAssignments();
 
         // custom method to determine which cells are editable
         tableModel = new DefaultTableModel(data, columnNames) {
+            // TODO - only let user edit assignment (and maybe due date) field
 //            @Override
 //            public boolean isCellEditable(int row, int col) {
 //                return (col == 3); // assignment column
@@ -93,7 +96,7 @@ public class PlannerGUI extends JFrame {
     // method to update table when user makes changes such as add/update/delete
     private void updateTable() {
 
-        Vector data = controller.getAllAssignments();
+        Vector<Vector<Assignment>> data = controller.getAllAssignments();
         tableModel.setDataVector(data, columnNames);
 
     }
@@ -113,15 +116,16 @@ public class PlannerGUI extends JFrame {
 
                 // if name or assignment field are empty, show error dialog
                 if (name.isEmpty() || classAssignment.isEmpty()) {
-                    errorDiolog("Make sure all fields are not empty.");
+                    errorDiolog("Make sure all fields are filled in.");
                     return;
                 }
 
                 try {
-                    // if class code is not positive number, show error dialog
+                    // if class code is not positive number or longer than 4 digits, show error dialog
                     code = Integer.parseInt(classCode.getText());
-                    if (code <= 0) {
-                        errorDiolog("Please enter positive number for class code.");
+                    if (code <= 0 || classCode.getText().trim().length() > 4) {
+                        errorDiolog("Please enter positive number no longer than 4 digits.");
+                        return;
                     }
 
                 } catch (NumberFormatException nfe) {
@@ -139,11 +143,48 @@ public class PlannerGUI extends JFrame {
             }
         });
 
+        deleteAssignmentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+                // TODO -
+                //  delete doesnt work because assignment object is displaying in ID column in JTable -
+                //  need to fix
+                int currentRow = plannerTable.getSelectedRow();
+
+                if (currentRow == -1) {
+                    errorDiolog("Please select an assignment in table to delete");
+                }
+
+                else {
+                    // if user selects yes to dialog, delete solver from database and update solversTable
+                    if (showYesNoDialog("Delete this assignment?") == JOptionPane.YES_OPTION) {
+                        // get the id of the selected solver
+                        int id = (Integer) tableModel.getValueAt(currentRow, 0);
+                        controller.deleteAssignment(id);
+                        updateTable();
+                    }
+
+                }
+
+
+            }
+        });
+
+        // TODO - export to CSV
+
+        // TODO - export to Google calendar
+
     }
+
 
     // error dialog to use if user enters invalid data
     private void errorDiolog(String msg) {
         JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Error", JOptionPane.ERROR_MESSAGE);
+    }
+
+    protected int showYesNoDialog(String message) {
+        return JOptionPane.showConfirmDialog(this, message, null, JOptionPane.YES_NO_OPTION);
     }
 
 }

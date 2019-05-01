@@ -20,7 +20,7 @@ public class Controller {
     }
 
     // get all assignments in database
-    Vector<Assignment> getAllAssignments() {
+    Vector<Vector<Assignment>> getAllAssignments() {
         return db.getAllAssignments();
     }
 
@@ -32,6 +32,11 @@ public class Controller {
     // add new assignment to database
     void addAssignment(Assignment assignment) {
         db.addAssignment(assignment);
+    }
+
+    // delete assignment from database and table
+    void deleteAssignment(int id) {
+        db.deleteAssignment(id);
     }
 
 

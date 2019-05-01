@@ -59,10 +59,10 @@ public class PlannerDB {
     }
 
     // get all assignments in database
-    Vector<Assignment> getAllAssignments() {
+    Vector<Vector<Assignment>> getAllAssignments() {
 
         // vector to hold assignments
-        Vector<Assignment> allAssignments = new Vector<>();
+        Vector<Vector<Assignment>> allAssignments = new Vector<>();
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
              Statement statement = connection.createStatement()) {
@@ -82,10 +82,14 @@ public class PlannerDB {
                 // convert date string to Date
                 Date date = new Date(dateString);
 
+                Vector<Assignment> v = new Vector<>();
+
                 // create assignment using data from table
                 Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
                 // add assignment to vector of assignments
-                allAssignments.add(assignmentRecord);
+                v.add(assignmentRecord);
+                // add vector of assignment to allAssignments vector
+                allAssignments.add(v);
 
             }
 
@@ -122,6 +126,24 @@ public class PlannerDB {
             throw new RuntimeException(e);
         }
 
+    }
+
+    // delete assignment from table using id
+    public void deleteAssignment(int assignmentID) {
+
+        final String deleteSql = "DELETE FROM " + TABLE_NAME + " WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL);
+             PreparedStatement preparedStatement = connection.prepareStatement(deleteSql)) {
+
+            // delete assignment using the ID
+            preparedStatement.setInt(1, assignmentID);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
 
     }
