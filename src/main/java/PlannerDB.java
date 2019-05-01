@@ -59,10 +59,10 @@ public class PlannerDB {
     }
 
     // get all assignments in database
-    Vector<Vector<Assignment>> getAllAssignments() {
+    Vector<Vector> getAllAssignments() {
 
         // vector to hold assignments
-        Vector<Vector<Assignment>> allAssignments = new Vector<>();
+        Vector<Vector> allAssignments = new Vector<>();
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
              Statement statement = connection.createStatement()) {
@@ -75,6 +75,7 @@ public class PlannerDB {
             while (rsAll.next()) {
 
                 // get data from columns
+                int id = rsAll.getInt(ID_COL);
                 String className = rsAll.getString(CLASS_NAME_COL);
                 int classCode = rsAll.getInt(CLASS_CODE_COL);
                 String assignment = rsAll.getString(ASSIGNMENT_COL);
@@ -82,14 +83,19 @@ public class PlannerDB {
                 // convert date string to Date
                 Date date = new Date(dateString);
 
-                Vector<Assignment> v = new Vector<>();
+                Vector v = new Vector();
 
                 // TODO figure out how to make rows in JTable display info correctly
                 // create assignment using data from table
-                Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
+                //Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
 
                 // add assignment to vector of assignments
-                v.add(assignmentRecord);
+                v.add(id);
+                v.add(className);
+                v.add(classCode);
+                v.add(assignment);
+                v.add(date);
+
                 // v.add(assignmentRecord.getClassName());
                 // v.add(assignmentRecord.getClassCode());
                 // v.add(assignmentRecord.getAssignment());

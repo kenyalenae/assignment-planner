@@ -20,7 +20,7 @@ public class Controller {
     }
 
     // get all assignments in database
-    Vector<Vector<Assignment>> getAllAssignments() {
+    Vector<Vector> getAllAssignments() {
         return db.getAllAssignments();
     }
 

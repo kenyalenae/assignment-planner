@@ -65,7 +65,7 @@ public class PlannerGUI extends JFrame {
         plannerTable.setAutoCreateRowSorter(true);
 
         columnNames = controller.getColumnNames();
-        Vector<Vector<Assignment>> data = controller.getAllAssignments();
+        Vector<Vector> data = controller.getAllAssignments();
 
         // custom method to determine which cells are editable
         tableModel = new DefaultTableModel(data, columnNames) {
@@ -96,7 +96,7 @@ public class PlannerGUI extends JFrame {
     // method to update table when user makes changes such as add/update/delete
     private void updateTable() {
 
-        Vector<Vector<Assignment>> data = controller.getAllAssignments();
+        Vector<Vector> data = controller.getAllAssignments();
         tableModel.setDataVector(data, columnNames);
 
     }
@@ -143,13 +143,11 @@ public class PlannerGUI extends JFrame {
             }
         });
 
+        // listener for delete assignment button
         deleteAssignmentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // TODO -
-                //  delete doesnt work because assignment object is displaying in ID column in JTable -
-                //  need to fix
                 int currentRow = plannerTable.getSelectedRow();
 
                 if (currentRow == -1) {
