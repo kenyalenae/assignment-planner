@@ -84,10 +84,17 @@ public class PlannerDB {
 
                 Vector<Assignment> v = new Vector<>();
 
+                // TODO figure out how to make rows in JTable display info correctly
                 // create assignment using data from table
                 Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
+
                 // add assignment to vector of assignments
                 v.add(assignmentRecord);
+                // v.add(assignmentRecord.getClassName());
+                // v.add(assignmentRecord.getClassCode());
+                // v.add(assignmentRecord.getAssignment());
+                // v.add(assignmentRecord.getDate());
+
                 // add vector of assignment to allAssignments vector
                 allAssignments.add(v);
 
