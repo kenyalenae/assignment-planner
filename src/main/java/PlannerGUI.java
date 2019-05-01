@@ -23,6 +23,8 @@ public class PlannerGUI extends JFrame {
     private JTable plannerTable;
     private JButton deleteAssignmentButton;
     private JButton addAssignmentButton;
+    private JButton addToGoogleCalendarButton;
+    private JButton exportToExcelButton;
 
     private Controller controller;
 
