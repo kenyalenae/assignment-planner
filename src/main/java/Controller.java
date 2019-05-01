@@ -39,6 +39,11 @@ public class Controller {
         db.deleteAssignment(id);
     }
 
+    // update assignment in database
+    void updateAssignment(int id, String assignment) {
+        db.updateAssignment(id, assignment);
+    }
+
 
 
 }

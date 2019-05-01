@@ -161,5 +161,27 @@ public class PlannerDB {
 
     }
 
+    public void updateAssignment(int id, String assignment) {
+
+        final String updateSql = "UPDATE " + TABLE_NAME + " SET assignment = ? WHERE id = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL);
+             PreparedStatement preparedStatement = connection.prepareStatement(updateSql)) {
+
+            // delete solver using the ID
+            preparedStatement.setString(1, assignment);
+            preparedStatement.setInt(2, id);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+    }
+
+
+
 
 }

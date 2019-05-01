@@ -59,7 +59,7 @@ public class PlannerGUI extends JFrame {
     private void configureTable() {
 
         // set up JTable
-        plannerTable.setGridColor(Color.BLACK);
+        // plannerTable.setGridColor(Color.BLACK);
 
         // enable sorting
         plannerTable.setAutoCreateRowSorter(true);
@@ -69,23 +69,23 @@ public class PlannerGUI extends JFrame {
 
         // custom method to determine which cells are editable
         tableModel = new DefaultTableModel(data, columnNames) {
-            // TODO - only let user edit assignment (and maybe due date) field
-//            @Override
-//            public boolean isCellEditable(int row, int col) {
-//                return (col == 3); // assignment column
-//            }
-//
-//            @Override
-//            public void setValueAt(Object val, int row, int col) {
-//
-//                // get row and send new value to DB for update
-//                int id = (int) getValueAt(row, 0);
-//
-//                String updateAssignment = val.toString();
-//
-//                controller.updateAssignment(id, updateAssignment);
-//                updateTable();
-//            }
+            // only let user edit assignment field
+            @Override
+            public boolean isCellEditable(int row, int col) {
+                return (col == 3); // assignment column
+            }
+
+            @Override
+            public void setValueAt(Object val, int row, int col) {
+
+                // get row and send new value to DB for update
+                int id = (int) getValueAt(row, 0);
+
+                String updateAssignment = val.toString();
+
+                controller.updateAssignment(id, updateAssignment);
+                updateTable();
+            }
 
         };
 
