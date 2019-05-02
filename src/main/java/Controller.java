@@ -44,6 +44,10 @@ public class Controller {
         db.updateAssignment(id, assignment);
     }
 
+    // export assignment list to excel spreadsheet
+    void exportToExcel() {
+        ExportToExcel.export();
+    }
 
 
 }

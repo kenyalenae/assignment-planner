@@ -6,6 +6,7 @@ import javax.swing.text.DateFormatter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -170,10 +171,28 @@ public class PlannerGUI extends JFrame {
             }
         });
 
-        // TODO - export to CSV
+        // TODO - export to Excel
         exportToExcelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+
+                int rowCount = plannerTable.getModel().getRowCount();
+
+                // if plannerTable is empty show user error dialog because nothing to export
+                if (rowCount == 0) {
+                    errorDiolog("There are no assignments to export.");
+                }
+                else {
+                    // ask user to confirm they want to export to excel
+                    if (showYesNoDialog("Export table of assignments to Excel?") == JOptionPane.YES_OPTION) {
+                        // write data to excel file
+                        // which is saved in root directory of project
+                        controller.exportToExcel();
+
+                    }
+                }
+
+
 
             }
         });

@@ -9,14 +9,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.sql.*;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Set;
-import java.util.Vector;
 
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
@@ -25,8 +20,9 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 public class ExportToExcel extends PlannerDB {
 
     /*
-    I am basing my code off of code I found on the website
-    http://thinktibits.blogspot.com/2012/12/POI-Create-Excel-File-JDBC-Oracle-Table-Data-Example.html
+    I am basing my code off of code and documentation I found on the below websites:
+    http://thinktibits.blogspot.com/2012/12/POI-Write-XLSX-Format-File-JDBC-Java-Example.html
+    https://poi.apache.org/download.html
     */
 
     private static final String DB_URL = "jdbc:sqlite:planner.sqlite"; // database url
@@ -40,9 +36,9 @@ public class ExportToExcel extends PlannerDB {
     private static final String DUE_DATE_COL = "due_date";
 
     // output file path
-    private static final String FILE_NAME = "src/AssignmentList.xlsx";
+    private static final String FILE_NAME = "AssignmentList.xlsx";
 
-    public static void WriteToExcel() {
+    public static void export() {
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
              Statement statement = connection.createStatement()) {
