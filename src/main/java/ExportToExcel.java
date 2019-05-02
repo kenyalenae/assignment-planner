@@ -61,14 +61,13 @@ public class ExportToExcel extends PlannerDB {
                 rowCounter++;
 
                 // get data from columns
-                int id = rsAll.getInt(ID_COL);
                 String className = rsAll.getString(CLASS_NAME_COL);
                 int classCode = rsAll.getInt(CLASS_CODE_COL);
                 String assignment = rsAll.getString(ASSIGNMENT_COL);
                 String dateString = rsAll.getString(DUE_DATE_COL);
 
                 // put data into HashMap
-                excelAssignmentData.put(Integer.toString(rowCounter), new Object[] {id, className, classCode, assignment, dateString});
+                excelAssignmentData.put(Integer.toString(rowCounter), new Object[] {className, classCode, assignment, dateString});
 
             }
 
@@ -84,8 +83,8 @@ public class ExportToExcel extends PlannerDB {
                 int cellNum = 0;
                 for (Object obj : assignmentArray) {
                     Cell cell = row.createCell(cellNum++);
-                    if (obj instanceof Double) {
-                        cell.setCellValue((Double)obj);
+                    if (obj instanceof Integer) {
+                        cell.setCellValue((Integer)obj);
                     } else {
                         cell.setCellValue((String)obj);
                     }
@@ -99,6 +98,7 @@ public class ExportToExcel extends PlannerDB {
 
                     // write to file
                     workbook.write(excelOutputFile);
+                    System.out.println("Successfully wrote to file.");
 
                     // close file
                     excelOutputFile.close();

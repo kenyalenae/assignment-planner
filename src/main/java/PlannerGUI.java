@@ -188,6 +188,7 @@ public class PlannerGUI extends JFrame {
                         // write data to excel file
                         // which is saved in root directory of project
                         controller.exportToExcel();
+                        // TODO - let user know export was successful
 
                     }
                 }
