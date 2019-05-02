@@ -167,16 +167,28 @@ public class PlannerGUI extends JFrame {
 
                 }
 
-
             }
         });
 
         // TODO - export to CSV
+        exportToExcelButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
         // TODO - export to Google calendar
+        addToGoogleCalendarButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+
+            }
+        });
 
     }
 
+    // I GOT THIS METHOD FROM LAB 8 GARDEN PROGRAM
     private void configureDateSpinner() {
 
         // Dates between Jan 1, 1970 and some time in 2920. I don't suppose this program will be around this long though...
@@ -200,7 +212,7 @@ public class PlannerGUI extends JFrame {
         JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
-    protected int showYesNoDialog(String message) {
+    private int showYesNoDialog(String message) {
         return JOptionPane.showConfirmDialog(this, message, null, JOptionPane.YES_NO_OPTION);
     }
 
