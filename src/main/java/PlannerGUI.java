@@ -187,8 +187,12 @@ public class PlannerGUI extends JFrame {
                     if (showYesNoDialog("Export table of assignments to Excel?") == JOptionPane.YES_OPTION) {
                         // write data to excel file
                         // which is saved in root directory of project
-                        controller.exportToExcel();
-                        // TODO - let user know export was successful
+                        String success = controller.exportToExcel();
+
+                        // let user know export was successful
+                        if (success.equals(ExportToExcel.OK)) {
+                            messageDiolog("Export was successful.");
+                        }
 
                     }
                 }
@@ -225,6 +229,10 @@ public class PlannerGUI extends JFrame {
         // And tell the serviceDataSpinner to use this Editor
         dueDateSpinner.setEditor(editor);
 
+    }
+
+    private void messageDiolog(String msg) {
+        JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // error dialog to use if user enters invalid data

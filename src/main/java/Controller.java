@@ -45,8 +45,8 @@ public class Controller {
     }
 
     // export assignment list to excel spreadsheet
-    void exportToExcel() {
-        ExportToExcel.export();
+    String exportToExcel() {
+        return ExportToExcel.export();
     }
 
 

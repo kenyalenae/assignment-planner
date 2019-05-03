@@ -21,8 +21,9 @@ public class ExportToExcel extends PlannerDB {
 
     /*
     I am basing my code off of code and documentation I found on the below websites:
+    https://poi.apache.org/
     http://thinktibits.blogspot.com/2012/12/POI-Write-XLSX-Format-File-JDBC-Java-Example.html
-    https://poi.apache.org/download.html
+    I also looked at multiple other websites for help but I didnt save the website urls
     */
 
     private static final String DB_URL = "jdbc:sqlite:planner.sqlite"; // database url
@@ -35,10 +36,12 @@ public class ExportToExcel extends PlannerDB {
     private static final String ASSIGNMENT_COL = "assignment";
     private static final String DUE_DATE_COL = "due_date";
 
+    static final String OK = "Ok";
+
     // output file path
     private static final String FILE_NAME = "AssignmentList.xlsx";
 
-    public static void export() {
+    public static String export() {
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
              Statement statement = connection.createStatement()) {
@@ -98,26 +101,27 @@ public class ExportToExcel extends PlannerDB {
 
                     // write to file
                     workbook.write(excelOutputFile);
-                    System.out.println("Successfully wrote to file.");
+                    System.out.println("File successfully written.");
 
                     // close file
                     excelOutputFile.close();
+
                 } catch (FileNotFoundException fnfe) {
                     fnfe.printStackTrace();
                     System.out.println("File not found.");
                 }
+
             } catch (IOException ioe) {
                 ioe.printStackTrace();
-                System.out.println("Unable to write to file");
+                System.out.println("Unable to write to file.");
             }
 
         } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
         }
 
+        return OK;
+
     }
-
-
-
 
 }
