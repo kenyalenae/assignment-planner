@@ -1,4 +1,5 @@
-/* class to export table to excel
+/*
+class to export table to excel
 so that user can keep a list of assignments on computer
 and they can edit the list with different fonts/make other changes
 or they could email the list to themselves to have on other devices
@@ -96,7 +97,7 @@ public class ExportToExcel extends PlannerDB {
 
             try {
                 try {
-                    // creates xlsx file
+                    // create xlsx file
                     FileOutputStream excelOutputFile = new FileOutputStream(new File(FILE_NAME));
 
                     // write to file
@@ -120,6 +121,8 @@ public class ExportToExcel extends PlannerDB {
             throw new RuntimeException(sqle);
         }
 
+        // return OK if file successfully written
+        // TODO - is this in the right location?
         return OK;
 
     }
