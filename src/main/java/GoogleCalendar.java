@@ -31,6 +31,7 @@ import com.google.api.services.calendar.model.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
@@ -56,7 +57,64 @@ public class GoogleCalendar {
 
     private static com.google.api.services.calendar.Calendar client;
 
+    // authorizes the installed application to access users protected data
+    private static Credential authorize() throws Exception {
 
+        // load client secrets
+        GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY,
+                new InputStreamReader(GoogleCalendar.class.getResourceAsStream("/client_secrets.json")));
+        if (clientSecrets.getDetails().getClientId().startsWith("Enter")
+            || clientSecrets.getDetails().getClientSecret().startsWith("Enter")) {
+            System.out.println("Enter Client ID and Secret from https://code.google.com/apis/console/?api=calendar "
+                    + "into calendar-cmdline-sample/src/main/resources/client_secrets.json");
+            System.exit(1);
+
+        }
+
+        // set up authorization code flow
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
+                httpTransport, JSON_FACTORY, clientSecrets,
+                Collections.singleton(CalendarScopes.CALENDAR)).setDataStoreFactory(dataStoreFactory).build();
+        // authorize
+        return new AuthorizationCodeInstalledApp(flow, new LocalServerReceiver()).authorize(("user"));
+
+    }
+
+    public static void addEvent(String eventName) {
+
+        try {
+
+            // initialize the transport
+            httpTransport = GoogleNetHttpTransport.newTrustedTransport();
+
+            // initialize the data store factory
+            dataStoreFactory = new FileDataStoreFactory(DATA_STORE_DIR);
+
+            // authorization
+            Credential credential = authorize();
+
+            // set up global calendar instance
+            client = new com.google.api.services.calendar.Calendar.Builder(
+                    httpTransport, JSON_FACTORY, credential).setApplicationName(APPLICATION_NAME).build();
+
+            // get the calendar the app will use. this will create a calendar if it does not already exist
+            Calendar appCalendar = getAppCalendar();
+
+            // add new event to the calendar
+            add(eventName, appCalendar);
+
+        } catch (IOException e) {
+            System.err.println(e.getMessage());
+        } catch (Throwable t) {
+            t.printStackTrace();
+        }
+    }
+
+    private static Calendar getAppCalendar() throws IOException {
+
+
+
+    }
 
 
 }
