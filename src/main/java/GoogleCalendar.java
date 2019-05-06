@@ -31,7 +31,7 @@ import com.google.api.services.calendar.model.*;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Calendar;
+//import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.TimeZone;
@@ -110,9 +110,25 @@ public class GoogleCalendar {
         }
     }
 
+    // check if calendar already exists, if it does then return it
+    // if doesnt exist, create new calendar
     private static Calendar getAppCalendar() throws IOException {
 
         // TODO
+        // get list of calendars
+        CalendarList calendarList = client.calendarList().list().execute();
+
+        // check if a calendar exists with the app calendar name
+        for (CalendarListEntry calendarListEntry : calendarList.getItems()) {
+
+            // check if calendar has the same summary name
+            if (calendarListEntry.getSummary().equals(CALENDAR_NAME)) {
+                // calendar exists, get this calendars unique id
+                String calendarId = calendarListEntry.getId();
+                // anf fetch the Calendar object and return it
+                return client.calendars().get(calendarId).execute();
+            }
+        }
 
         // a calendar with this name does not already exist
         // create new calendar and return it
@@ -121,9 +137,10 @@ public class GoogleCalendar {
 
     }
 
+    // add new Calendar
     private static Calendar addCalendar() throws IOException {
 
-        // TODO make sure this is working once getAppCalendar method is complete
+        // TODO
         Calendar entry = new Calendar();
         entry.setSummary(CALENDAR_NAME);
         Calendar result = client.calendars().insert(entry).execute();
@@ -131,18 +148,28 @@ public class GoogleCalendar {
 
     }
 
+    // add event and calendar
     private static void add(String eventName, Calendar calendar) throws IOException {
 
         // TODO
-
+        Event event = newEvent(eventName);
+        System.out.println("Event to add to calendar: " + event);
+        Event result = client.events().insert(calendar.getId(), event).execute();
+        System.out.println("Result of adding event to calendar: " + result);
     }
 
+    // add new event to calendar
     private static Event newEvent(String eventName) {
 
-        Event event = new Event();
-
         // TODO
-
+        Event event = new Event();
+        event.setSummary(eventName);
+        Date startDate =  new Date();
+        Date endDate = new Date(startDate.getTime() + 3600000);
+        DateTime start = new DateTime(startDate, TimeZone.getTimeZone("UTC"));
+        event.setStart(new EventDateTime().setDateTime(start));
+        DateTime end = new DateTime(endDate, TimeZone.getTimeZone("UTC"));
+        event.setEnd(new EventDateTime().setDateTime(end));
         return event;
 
     }
