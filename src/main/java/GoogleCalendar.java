@@ -112,7 +112,38 @@ public class GoogleCalendar {
 
     private static Calendar getAppCalendar() throws IOException {
 
+        // TODO
 
+        // a calendar with this name does not already exist
+        // create new calendar and return it
+        Calendar newAppCalendar = addCalendar();
+        return newAppCalendar;
+
+    }
+
+    private static Calendar addCalendar() throws IOException {
+
+        // TODO make sure this is working once getAppCalendar method is complete
+        Calendar entry = new Calendar();
+        entry.setSummary(CALENDAR_NAME);
+        Calendar result = client.calendars().insert(entry).execute();
+        return result;
+
+    }
+
+    private static void add(String eventName, Calendar calendar) throws IOException {
+
+        // TODO
+
+    }
+
+    private static Event newEvent(String eventName) {
+
+        Event event = new Event();
+
+        // TODO
+
+        return event;
 
     }
 

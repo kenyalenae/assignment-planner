@@ -13,7 +13,7 @@ THINGS TO DO:
 - ~~Only allow user to update assignment column~~
 - ~~Once rows fixed, make sure delete button works~~
 - Configure date spinner properly
-- Implement ability to export to CSV 
+- ~~Implement ability to export to Excel~~
 - Implement ability to export to Google calendar
 - Update readme.md file once project complete
 
