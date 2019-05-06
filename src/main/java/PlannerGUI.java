@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.SQLException;
+import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -64,7 +65,8 @@ public class PlannerGUI extends JFrame {
         // enable sorting
         plannerTable.setAutoCreateRowSorter(true);
 
-        // TODO auto resize columns - this isn't currently working
+        // TODO auto resize columns to width of contents
+
         plannerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         columnNames = controller.getColumnNames();
@@ -171,7 +173,7 @@ public class PlannerGUI extends JFrame {
             }
         });
 
-        // TODO - export to Excel
+        // export table of assignments to Excel
         exportToExcelButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -192,6 +194,8 @@ public class PlannerGUI extends JFrame {
                         // let user know export was successful
                         if (success.equals(ExportToExcel.OK)) {
                             messageDiolog("Export was successful.");
+                        } else {
+                            errorDiolog("There was an error exporting to Excel.");
                         }
 
                     }
@@ -207,9 +211,36 @@ public class PlannerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
+                int currentRow = plannerTable.getSelectedRow();
+
+                if (currentRow == -1) {
+                    errorDiolog("Please select an assignment in table to add to Google Calendar.");
+                }
+
+                else {
+
+                    // get assignment description and due date to add to calendar
+                    Object assignmentObj = getData(plannerTable, currentRow, 3);
+                    System.out.println("Assignment of column 3 and current row: " + assignmentObj);
+                    String assignment = assignmentObj.toString(); // convert assignment object to string
+
+                    Object dueDateObj = getData(plannerTable, currentRow, 4);
+                    System.out.println("Due date of column 4 and current row: " + dueDateObj);
+                    Date dueDate = (Date) dueDateObj; // convert due date object to Date
+
+                    GoogleCalendar.addEvent(assignment, dueDate);
+
+
+                }
+
             }
         });
 
+    }
+
+    // method to get data from plannerTable
+    public Object getData(JTable plannerTable, int row, int col) {
+        return plannerTable.getModel().getValueAt(row, col);
     }
 
     // I GOT THIS METHOD FROM LAB 8 GARDEN PROGRAM

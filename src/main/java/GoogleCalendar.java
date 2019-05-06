@@ -80,7 +80,7 @@ public class GoogleCalendar {
 
     }
 
-    public static void addEvent(String eventName) {
+    public static void addEvent(String eventName, Date dueDate) {
 
         try {
 
@@ -101,7 +101,7 @@ public class GoogleCalendar {
             Calendar appCalendar = getAppCalendar();
 
             // add new event to the calendar
-            add(eventName, appCalendar);
+            add(eventName, dueDate, appCalendar);
 
         } catch (IOException e) {
             System.err.println(e.getMessage());
@@ -149,26 +149,26 @@ public class GoogleCalendar {
     }
 
     // add event and calendar
-    private static void add(String eventName, Calendar calendar) throws IOException {
+    private static void add(String eventName, Date dueDate, Calendar calendar) throws IOException {
 
-        // TODO
-        Event event = newEvent(eventName);
+        Event event = newEvent(eventName, dueDate);
         System.out.println("Event to add to calendar: " + event);
         Event result = client.events().insert(calendar.getId(), event).execute();
         System.out.println("Result of adding event to calendar: " + result);
     }
 
     // add new event to calendar
-    private static Event newEvent(String eventName) {
+    private static Event newEvent(String eventName, Date dueDate) {
 
-        // TODO
+        // TODO - make start date and end date the same day
+
         Event event = new Event();
         event.setSummary(eventName);
         Date startDate =  new Date();
-        Date endDate = new Date(startDate.getTime() + 3600000);
+        //Date endDate = new Date(startDate.getTime() + 3600000);
         DateTime start = new DateTime(startDate, TimeZone.getTimeZone("UTC"));
         event.setStart(new EventDateTime().setDateTime(start));
-        DateTime end = new DateTime(endDate, TimeZone.getTimeZone("UTC"));
+        DateTime end = new DateTime(dueDate, TimeZone.getTimeZone("UTC"));
         event.setEnd(new EventDateTime().setDateTime(end));
         return event;
 
