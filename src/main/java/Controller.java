@@ -1,5 +1,5 @@
-// class to hold main class
-// controller.java will contain methods to connect database to GUI
+// class to hold main method
+// controller.java contains methods to connect database to GUI
 
 import java.util.Vector;
 
