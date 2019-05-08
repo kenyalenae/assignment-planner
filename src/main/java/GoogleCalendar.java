@@ -163,7 +163,8 @@ public class GoogleCalendar {
     // add new event to calendar
     private static Event newEvent(String eventName, Date dueDate) {
 
-        // TODO - make start date and end date the same day
+        // TODO - make start date the beginning of day and end date the end of same day
+        //  so basically make event an all day event
         Event event = new Event();
         event.setSummary(eventName);
         // Date startDate =  new Date();
