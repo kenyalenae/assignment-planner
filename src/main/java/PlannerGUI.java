@@ -112,41 +112,55 @@ public class PlannerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                // get user input
-                String name = className.getText();
-                String classAssignment = assignment.getText();
-                Date dueDate = (Date) dueDateSpinner.getValue();
-                int code;
-
-                // if name or assignment field are empty, show error dialog
-                if (name.isEmpty() || classAssignment.isEmpty()) {
-                    errorDiolog("Make sure all fields are filled in.");
-                    return;
-                }
-
-                // TODO - check if name field has any characters other than a-z
-
                 try {
-                    // if class code is not positive number or longer than 4 digits, show error dialog
-                    code = Integer.parseInt(classCode.getText());
-                    if (code <= 0 || classCode.getText().trim().length() > 4) {
-                        errorDiolog("Please enter positive number no longer than 4 digits.");
+                    // get user input
+                    String name = className.getText();
+                    String classAssignment = assignment.getText();
+                    //Date dueDate = (Date) dueDateSpinner.getValue();
+                    int code;
+
+                    // convert dueDateSpinner to simpler date format
+                    String startDate = dueDateSpinner.getValue().toString();
+                    DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+                    Date date = formatter.parse(startDate);
+                    DateFormat newFormat = new SimpleDateFormat("MM dd yyyy");
+                    String finalDate = newFormat.format(date);
+                    Date newDate = newFormat.parse(finalDate);
+
+                    // if name or assignment field are empty, show error dialog
+                    if (name.isEmpty() || classAssignment.isEmpty()) {
+                        errorDiolog("Make sure all fields are filled in.");
                         return;
                     }
 
-                } catch (NumberFormatException nfe) {
-                    errorDiolog("Enter a number for class code.");
-                    return;
+                    // TODO - check if name field has any characters other than a-z
+
+                    try {
+                        // if class code is not positive number or longer than 4 digits, show error dialog
+                        code = Integer.parseInt(classCode.getText());
+                        if (code <= 0 || classCode.getText().trim().length() > 4) {
+                            errorDiolog("Please enter positive number no longer than 4 digits.");
+                            return;
+                        }
+
+                    } catch (NumberFormatException nfe) {
+                        errorDiolog("Enter a number for class code.");
+                        return;
+                    }
+
+                    // TODO - convert date to MM-DD-YYYY format before adding
+
+                    // create assignment using user entered information
+                    Assignment assignmentRecord = new Assignment(name, code, classAssignment, newDate);
+                    // add assignment to database
+                    controller.addAssignment(assignmentRecord);
+                    // update JTable
+                    updateTable();
+
+                } catch (ParseException p) {
+                    p.printStackTrace();
                 }
 
-                // TODO - convert date to MM-DD-YYYY format before adding
-
-                // create assignment using user entered information
-                Assignment assignmentRecord = new Assignment(name, code, classAssignment, dueDate);
-                // add assignment to database
-                controller.addAssignment(assignmentRecord);
-                // update JTable
-                updateTable();
 
             }
         });
@@ -194,17 +208,19 @@ public class PlannerGUI extends JFrame {
                         // which is saved in root directory of project
                         String success = controller.exportToExcel();
 
-                        // let user know export was successful
+                        // let user know if export was successful
                         if (success.equals(ExportToExcel.OK)) {
                             messageDiolog("Export was successful.");
-                        } else {
-                            errorDiolog("There was an error exporting to Excel.");
+                        }
+
+                        // let user know if export failed
+                        if (success.equals(ExportToExcel.NOTOK)) {
+                            errorDiolog("Failed to export to Excel.");
                         }
 
                     }
+
                 }
-
-
 
             }
         });

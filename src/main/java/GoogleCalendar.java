@@ -42,6 +42,9 @@ public class GoogleCalendar {
 
     private static final String CALENDAR_NAME = "Assignments";
 
+    static final String OK = "OK";
+    static final String NOTOK = "NOT OK";
+
     // directory to store user credentials
     private static final java.io.File DATA_STORE_DIR =
             new java.io.File(System.getProperty("user.home"), ".store/calendar_sample");
@@ -124,7 +127,7 @@ public class GoogleCalendar {
             if (calendarListEntry.getSummary().equals(CALENDAR_NAME)) {
                 // calendar exists, get this calendars unique id
                 String calendarId = calendarListEntry.getId();
-                // and fetch the Calendar object and return it
+                // anf fetch the Calendar object and return it
                 return client.calendars().get(calendarId).execute();
             }
         }
@@ -146,7 +149,7 @@ public class GoogleCalendar {
 
     }
 
-    // add event to calendar
+    // add event and calendar
     private static void add(String eventName, Date dueDate, Calendar calendar) throws IOException {
 
         Event event = newEvent(eventName, dueDate);
@@ -154,17 +157,18 @@ public class GoogleCalendar {
         Event result = client.events().insert(calendar.getId(), event).execute();
         System.out.println("Result of adding event to calendar: " + result);
 
+
     }
 
-    // create new event
+    // add new event to calendar
     private static Event newEvent(String eventName, Date dueDate) {
 
         // TODO - make start date and end date the same day
         Event event = new Event();
         event.setSummary(eventName);
-        Date startDate =  new Date();
+        // Date startDate =  new Date();
         //Date endDate = new Date(startDate.getTime() + 3600000);
-        DateTime start = new DateTime(startDate, TimeZone.getTimeZone("UTC"));
+        DateTime start = new DateTime(dueDate, TimeZone.getTimeZone("UTC"));
         event.setStart(new EventDateTime().setDateTime(start));
         DateTime end = new DateTime(dueDate, TimeZone.getTimeZone("UTC"));
         event.setEnd(new EventDateTime().setDateTime(end));

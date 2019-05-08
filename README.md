@@ -14,7 +14,7 @@ THINGS TO DO:
 - ~~Once rows fixed, make sure delete button works~~
 - Configure date spinner properly
 - ~~Implement ability to export to Excel~~
-- Implement ability to export to Google calendar
+- ~~Implement ability to export to Google calendar~~
 - Update readme.md file once project complete
 
 **What else to do?**

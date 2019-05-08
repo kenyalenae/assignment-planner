@@ -38,6 +38,7 @@ public class ExportToExcel extends PlannerDB {
     private static final String DUE_DATE_COL = "due_date";
 
     static final String OK = "Ok";
+    static final String NOTOK = "NOT OK";
 
     // output file path
     private static final String FILE_NAME = "AssignmentList.xlsx";
@@ -107,23 +108,24 @@ public class ExportToExcel extends PlannerDB {
                     // close file
                     excelOutputFile.close();
 
+                    return OK;
+
                 } catch (FileNotFoundException fnfe) {
                     fnfe.printStackTrace();
                     System.out.println("File not found.");
+                    return NOTOK;
                 }
 
             } catch (IOException ioe) {
                 ioe.printStackTrace();
                 System.out.println("Unable to write to file.");
+                return NOTOK;
             }
 
         } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
-        }
 
-        // return OK if file successfully written
-        // TODO - check if this is in the right location?
-        return OK;
+        }
 
     }
 
