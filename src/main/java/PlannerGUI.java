@@ -65,8 +65,7 @@ public class PlannerGUI extends JFrame {
         // enable sorting
         plannerTable.setAutoCreateRowSorter(true);
 
-        // TODO auto resize columns to width of contents
-
+        // TODO auto size columns to width of contents
         plannerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
 
         columnNames = controller.getColumnNames();
@@ -125,6 +124,8 @@ public class PlannerGUI extends JFrame {
                     return;
                 }
 
+                // TODO - check if name field has any characters other than a-z
+
                 try {
                     // if class code is not positive number or longer than 4 digits, show error dialog
                     code = Integer.parseInt(classCode.getText());
@@ -137,6 +138,8 @@ public class PlannerGUI extends JFrame {
                     errorDiolog("Enter a number for class code.");
                     return;
                 }
+
+                // TODO - convert date to MM-DD-YYYY format before adding
 
                 // create assignment using user entered information
                 Assignment assignmentRecord = new Assignment(name, code, classAssignment, dueDate);
@@ -230,6 +233,7 @@ public class PlannerGUI extends JFrame {
 
                     GoogleCalendar.addEvent(assignment, dueDate);
 
+                    // TODO - let user know adding to calendar was successful
 
                 }
 
@@ -262,6 +266,7 @@ public class PlannerGUI extends JFrame {
 
     }
 
+    // display informative message to user
     private void messageDiolog(String msg) {
         JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
     }

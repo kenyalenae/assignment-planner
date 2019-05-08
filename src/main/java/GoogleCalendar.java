@@ -114,7 +114,6 @@ public class GoogleCalendar {
     // if doesnt exist, create new calendar
     private static Calendar getAppCalendar() throws IOException {
 
-        // TODO
         // get list of calendars
         CalendarList calendarList = client.calendarList().list().execute();
 
@@ -125,7 +124,7 @@ public class GoogleCalendar {
             if (calendarListEntry.getSummary().equals(CALENDAR_NAME)) {
                 // calendar exists, get this calendars unique id
                 String calendarId = calendarListEntry.getId();
-                // anf fetch the Calendar object and return it
+                // and fetch the Calendar object and return it
                 return client.calendars().get(calendarId).execute();
             }
         }
@@ -140,7 +139,6 @@ public class GoogleCalendar {
     // add new Calendar
     private static Calendar addCalendar() throws IOException {
 
-        // TODO
         Calendar entry = new Calendar();
         entry.setSummary(CALENDAR_NAME);
         Calendar result = client.calendars().insert(entry).execute();
@@ -148,20 +146,20 @@ public class GoogleCalendar {
 
     }
 
-    // add event and calendar
+    // add event to calendar
     private static void add(String eventName, Date dueDate, Calendar calendar) throws IOException {
 
         Event event = newEvent(eventName, dueDate);
         System.out.println("Event to add to calendar: " + event);
         Event result = client.events().insert(calendar.getId(), event).execute();
         System.out.println("Result of adding event to calendar: " + result);
+
     }
 
-    // add new event to calendar
+    // create new event
     private static Event newEvent(String eventName, Date dueDate) {
 
         // TODO - make start date and end date the same day
-
         Event event = new Event();
         event.setSummary(eventName);
         Date startDate =  new Date();

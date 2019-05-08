@@ -122,7 +122,7 @@ public class ExportToExcel extends PlannerDB {
         }
 
         // return OK if file successfully written
-        // TODO - is this in the right location?
+        // TODO - check if this is in the right location?
         return OK;
 
     }

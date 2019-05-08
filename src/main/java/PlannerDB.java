@@ -85,21 +85,12 @@ public class PlannerDB {
 
                 Vector v = new Vector();
 
-                // TODO figure out how to make rows in JTable display info correctly
-                // create assignment using data from table
-                //Assignment assignmentRecord = new Assignment(className, classCode, assignment, date);
-
                 // add assignment to vector of assignments
                 v.add(id);
                 v.add(className);
                 v.add(classCode);
                 v.add(assignment);
                 v.add(date);
-
-                // v.add(assignmentRecord.getClassName());
-                // v.add(assignmentRecord.getClassCode());
-                // v.add(assignmentRecord.getAssignment());
-                // v.add(assignmentRecord.getDate());
 
                 // add vector of assignment to allAssignments vector
                 allAssignments.add(v);
@@ -113,7 +104,6 @@ public class PlannerDB {
         } catch (SQLException sqle) {
             throw new RuntimeException(sqle);
         }
-
 
     }
 
@@ -158,7 +148,6 @@ public class PlannerDB {
             throw new RuntimeException(e);
         }
 
-
     }
 
     public void updateAssignment(int id, String assignment) {
@@ -178,10 +167,7 @@ public class PlannerDB {
             throw new RuntimeException(e);
         }
 
-
     }
-
-
 
 
 }
