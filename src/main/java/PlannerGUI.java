@@ -3,11 +3,8 @@
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.DateFormatter;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
-import java.sql.SQLOutput;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -126,7 +123,7 @@ public class PlannerGUI extends JFrame {
 
                     // if name or assignment field are empty, show error dialog
                     if (name.isEmpty() || classAssignment.isEmpty()) {
-                        errorDiolog("Make sure all fields are filled in.");
+                        errorDialog("Make sure all fields are filled in.");
                         return;
                     }
 
@@ -136,12 +133,12 @@ public class PlannerGUI extends JFrame {
                         // if class code is not positive number or longer than 4 digits, show error dialog
                         code = Integer.parseInt(classCode.getText());
                         if (code <= 0 || classCode.getText().trim().length() > 4) {
-                            errorDiolog("Please enter positive number no longer than 4 digits.");
+                            errorDialog("Please enter positive number no longer than 4 digits.");
                             return;
                         }
 
                     } catch (NumberFormatException nfe) {
-                        errorDiolog("Enter a number for class code.");
+                        errorDialog("Enter a number for class code.");
                         return;
                     }
 
@@ -170,7 +167,7 @@ public class PlannerGUI extends JFrame {
                 int currentRow = plannerTable.getSelectedRow();
 
                 if (currentRow == -1) {
-                    errorDiolog("Please select an assignment in table to delete");
+                    errorDialog("Please select an assignment in table to delete");
                 }
 
                 else {
@@ -196,7 +193,7 @@ public class PlannerGUI extends JFrame {
 
                 // if plannerTable is empty show user error dialog because nothing to export
                 if (rowCount == 0) {
-                    errorDiolog("There are no assignments to export.");
+                    errorDialog("There are no assignments to export.");
                 }
                 else {
                     // ask user to confirm they want to export to excel
@@ -207,12 +204,12 @@ public class PlannerGUI extends JFrame {
 
                         // let user know if export was successful
                         if (success.equals(ExportToExcel.OK)) {
-                            messageDiolog("Export was successful.");
+                            messageDialog("Export was successful.");
                         }
 
                         // let user know if export failed
                         if (success.equals(ExportToExcel.NOTOK)) {
-                            errorDiolog("Failed to export to Excel.");
+                            errorDialog("Failed to export to Excel.");
                         }
 
                     }
@@ -230,7 +227,7 @@ public class PlannerGUI extends JFrame {
                 int currentRow = plannerTable.getSelectedRow();
 
                 if (currentRow == -1) {
-                    errorDiolog("Please select an assignment in table to add to Google Calendar.");
+                    errorDialog("Please select an assignment in table to add to Google Calendar.");
                 }
 
                 else {
@@ -257,7 +254,7 @@ public class PlannerGUI extends JFrame {
     }
 
     // method to get data from plannerTable
-    public Object getData(JTable plannerTable, int row, int col) {
+    private Object getData(JTable plannerTable, int row, int col) {
         return plannerTable.getModel().getValueAt(row, col);
     }
 
@@ -281,12 +278,12 @@ public class PlannerGUI extends JFrame {
     }
 
     // display informative message to user
-    private void messageDiolog(String msg) {
+    private void messageDialog(String msg) {
         JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Success", JOptionPane.INFORMATION_MESSAGE);
     }
 
     // error dialog to use if user enters invalid data
-    private void errorDiolog(String msg) {
+    private void errorDialog(String msg) {
         JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
