@@ -116,16 +116,13 @@ public class PlannerGUI extends JFrame {
                     // get user input
                     String name = className.getText();
                     String classAssignment = assignment.getText();
-                    //Date dueDate = (Date) dueDateSpinner.getValue();
+                    Date dueDate = (Date) dueDateSpinner.getValue();
                     int code;
 
-                    // convert dueDateSpinner to simpler date format
-                    String startDate = dueDateSpinner.getValue().toString();
-                    DateFormat formatter = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
-                    Date date = formatter.parse(startDate);
+                    // TODO - convert date to MM-DD-YYYY format before adding
                     DateFormat newFormat = new SimpleDateFormat("MM dd yyyy");
-                    String finalDate = newFormat.format(date);
-                    Date newDate = newFormat.parse(finalDate);
+                    String date = newFormat.format(dueDate);
+                    Date updatedDate = newFormat.parse(date);
 
                     // if name or assignment field are empty, show error dialog
                     if (name.isEmpty() || classAssignment.isEmpty()) {
@@ -148,10 +145,8 @@ public class PlannerGUI extends JFrame {
                         return;
                     }
 
-                    // TODO - convert date to MM-DD-YYYY format before adding
-
                     // create assignment using user entered information
-                    Assignment assignmentRecord = new Assignment(name, code, classAssignment, newDate);
+                    Assignment assignmentRecord = new Assignment(name, code, classAssignment, updatedDate);
                     // add assignment to database
                     controller.addAssignment(assignmentRecord);
                     // update JTable
@@ -225,7 +220,7 @@ public class PlannerGUI extends JFrame {
             }
         });
 
-        // TODO - export to Google calendar
+        // export to Google calendar
         addToGoogleCalendarButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
