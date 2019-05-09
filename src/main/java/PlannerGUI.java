@@ -120,7 +120,7 @@ public class PlannerGUI extends JFrame {
                     int code;
 
                     // TODO - convert date to MM-DD-YYYY format before adding
-                    DateFormat newFormat = new SimpleDateFormat("MM dd yyyy");
+                    DateFormat newFormat = new SimpleDateFormat("MM-dd-yyyy");
                     String date = newFormat.format(dueDate);
                     Date updatedDate = newFormat.parse(date);
 
@@ -151,6 +151,8 @@ public class PlannerGUI extends JFrame {
                     controller.addAssignment(assignmentRecord);
                     // update JTable
                     updateTable();
+
+                    System.out.println(updatedDate);
 
                 } catch (ParseException p) {
                     p.printStackTrace();
@@ -249,6 +251,7 @@ public class PlannerGUI extends JFrame {
                 }
 
             }
+
         });
 
     }
