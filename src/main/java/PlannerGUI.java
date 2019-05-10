@@ -155,7 +155,6 @@ public class PlannerGUI extends JFrame {
                     p.printStackTrace();
                 }
 
-
             }
         });
 
@@ -232,18 +231,31 @@ public class PlannerGUI extends JFrame {
 
                 else {
 
-                    // get assignment description and due date to add to calendar
-                    Object assignmentObj = getData(plannerTable, currentRow, 3);
-                    System.out.println("Assignment of column 3 and current row: " + assignmentObj);
-                    String assignment = assignmentObj.toString(); // convert assignment object to string
+                    if (showYesNoDialog("Add assignment to Google Calendar?") == JOptionPane.YES_OPTION) {
 
-                    Object dueDateObj = getData(plannerTable, currentRow, 4);
-                    System.out.println("Due date of column 4 and current row: " + dueDateObj);
-                    Date dueDate = (Date) dueDateObj; // convert due date object to Date
+                        // get assignment description and due date to add to calendar
+                        Object assignmentObj = getData(plannerTable, currentRow, 3);
+                        System.out.println("Assignment of column 3 and current row: " + assignmentObj);
+                        String assignment = assignmentObj.toString(); // convert assignment object to string
 
-                    GoogleCalendar.addEvent(assignment, dueDate);
+                        Object dueDateObj = getData(plannerTable, currentRow, 4);
+                        System.out.println("Due date of column 4 and current row: " + dueDateObj);
+                        Date dueDate = (Date) dueDateObj; // convert due date object to Date
 
-                    // TODO - let user know adding to calendar was successful
+                        // let user know adding to calendar was successful
+                        String eventSuccessful = GoogleCalendar.addEvent(assignment, dueDate);
+
+                        // let user know if export was successful
+                        if (eventSuccessful.equals(GoogleCalendar.OK)) {
+                            messageDialog("Successfully added to Google Calendar.");
+                        }
+
+                        // let user know if export failed
+                        if (eventSuccessful.equals(GoogleCalendar.NOTOK)) {
+                            errorDialog("Failed to add to Google Calendar.");
+                        }
+
+                    }
 
                 }
 

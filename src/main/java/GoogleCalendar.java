@@ -83,7 +83,7 @@ public class GoogleCalendar {
 
     }
 
-    public static void addEvent(String eventName, Date dueDate) {
+    public static String addEvent(String eventName, Date dueDate) {
 
         try {
 
@@ -106,11 +106,16 @@ public class GoogleCalendar {
             // add new event to the calendar
             add(eventName, dueDate, appCalendar);
 
+            return OK;
+
         } catch (IOException e) {
             System.err.println(e.getMessage());
+            return NOTOK;
         } catch (Throwable t) {
             t.printStackTrace();
+            return NOTOK;
         }
+
     }
 
     // check if calendar already exists, if it does then return it
