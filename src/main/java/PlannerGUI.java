@@ -231,6 +231,7 @@ public class PlannerGUI extends JFrame {
 
                 else {
 
+                    // confirm if user wants to add to calendar
                     if (showYesNoDialog("Add assignment to Google Calendar?") == JOptionPane.YES_OPTION) {
 
                         // get assignment description and due date to add to calendar
@@ -245,7 +246,6 @@ public class PlannerGUI extends JFrame {
                         // let user know adding to calendar was successful
                         String eventSuccessful = GoogleCalendar.addEvent(assignment, dueDate);
 
-                        // let user know if export was successful
                         if (eventSuccessful.equals(GoogleCalendar.OK)) {
                             messageDialog("Successfully added to Google Calendar.");
                         }
