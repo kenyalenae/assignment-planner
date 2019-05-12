@@ -7,7 +7,7 @@ The user is able to add, delete, and update assignments. User can also
 export list of assignments to Excel and they can add assignments to their
 Google Calendar.
 
-You will not need any usernames/passwords to run the program. Nor will you
+You will not need any user names/passwords to run the program. Nor will you
 need to download any 3rd party libraries. The needed dependencies are in the
 pom.xml file. 
 
