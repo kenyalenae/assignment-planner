@@ -62,8 +62,10 @@ public class PlannerGUI extends JFrame {
         // enable sorting
         plannerTable.setAutoCreateRowSorter(true);
 
-        // TODO auto size columns to width of contents
+        // TODO - auto size columns to width of contents
         plannerTable.setAutoResizeMode(JTable.AUTO_RESIZE_ALL_COLUMNS);
+
+        // TODO - highlight row red if due date is past the current date
 
         columnNames = controller.getColumnNames();
         Vector<Vector> data = controller.getAllAssignments();
@@ -299,6 +301,7 @@ public class PlannerGUI extends JFrame {
         JOptionPane.showMessageDialog(PlannerGUI.this, msg, "Error", JOptionPane.ERROR_MESSAGE);
     }
 
+    // dialog to confirm if user would like to continue
     private int showYesNoDialog(String message) {
         return JOptionPane.showConfirmDialog(this, message, null, JOptionPane.YES_NO_OPTION);
     }

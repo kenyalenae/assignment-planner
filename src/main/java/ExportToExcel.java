@@ -24,14 +24,13 @@ public class ExportToExcel extends PlannerDB {
     I am basing my code off of code and documentation I found on the below websites:
     https://poi.apache.org/
     http://thinktibits.blogspot.com/2012/12/POI-Write-XLSX-Format-File-JDBC-Java-Example.html
-    I also looked at multiple other websites for help but I didnt save the website urls
+    I also looked at other websites for help but I didnt save the website urls
     */
 
     private static final String DB_URL = "jdbc:sqlite:planner.sqlite"; // database url
 
     // strings to hold database information
     private static final String TABLE_NAME = "planner";
-    private static final String ID_COL = "id";
     private static final String CLASS_NAME_COL = "class_name";
     private static final String CLASS_CODE_COL = "class_code";
     private static final String ASSIGNMENT_COL = "assignment";
