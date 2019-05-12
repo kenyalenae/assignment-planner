@@ -1,20 +1,30 @@
 ## Assignment Planner - Java Final Project
 
-THINGS TO DO:
+Assignment Planner is an application that could potentially be used 
+by a student in school to keep their assignments organized. There are
+fields for class name, class code, assignment description, and due date.
+The user is able to add, delete, and update assignments. User can also
+export list of assignments to Excel and they can add assignments to their
+Google Calendar.
 
-- ~~Create GUI form~~
-- ~~Set up database~~
-- ~~Connect GUI with database~~ 
-- ~~Create assignment class~~
-- ~~Create controller/main class~~ 
-- ~~Configure JTable using Vectors~~
-- ~~Create add, update, delete database statements~~
-- ~~Display assignment objects in rows properly~~
-- ~~Only allow user to update assignment column~~
-- ~~Once rows fixed, make sure delete button works~~
-- Configure date spinner properly
-- ~~Implement ability to export to Excel~~
-- ~~Implement ability to export to Google calendar~~
-- Update readme.md file once project complete
+You will not need any usernames/passwords to run the program. Nor will you
+need to download any 3rd party libraries. The needed dependencies are in the
+pom.xml file. 
 
-**What else to do?**
+To add assignments to your Google calendar, you may need to allow Google 
+Quickstart to access your Google calendars. A page will open in your browser and
+will prompt you to do so the first time you click the "add to Google calendar" button. 
+
+Known bugs or problems:
+- When you click "add to Google calendar" for the first time and then when it asks you to 
+"allow Quickstart to access your calendars", if you close the window in your browser 
+instead of accepting, the program will freeze and you cannot click anywhere so you have 
+to manually stop running the program. 
+
+Program features:
+- Can add and delete assignments from table
+- Can update assignment description field, but cannot edit other fields
+- Can sort columns in table by clicking on column headers
+- Can export list of assignments to Excel spreadsheet
+- Can add assignments to Google calendar 
+
