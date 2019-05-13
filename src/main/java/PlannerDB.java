@@ -4,8 +4,6 @@ import org.sqlite.core.DB;
 
 import java.sql.*;
 import java.util.Date;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Vector;
 
 
@@ -114,7 +112,7 @@ public class PlannerDB {
         String addAssignmentSql = "INSERT INTO planner (class_name, class_code, assignment, due_date) VALUES (?,?,?,?)";
 
         try (Connection connection = DriverManager.getConnection(DB_URL);
-        PreparedStatement preparedStatement = connection.prepareStatement(addAssignmentSql)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(addAssignmentSql)) {
 
             // prepared statements
             preparedStatement.setString(1, assignment.getClassName());
