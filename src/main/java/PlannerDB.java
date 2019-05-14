@@ -3,6 +3,9 @@
 import org.sqlite.core.DB;
 
 import java.sql.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Vector;
 
@@ -72,26 +75,33 @@ public class PlannerDB {
             // while there are rows in table, add data to assignments vector
             while (rsAll.next()) {
 
-                // get data from columns
-                int id = rsAll.getInt(ID_COL);
-                String className = rsAll.getString(CLASS_NAME_COL);
-                int classCode = rsAll.getInt(CLASS_CODE_COL);
-                String assignment = rsAll.getString(ASSIGNMENT_COL);
-                String dateString = rsAll.getString(DUE_DATE_COL);
-                // convert date string to Date
-                Date date = new Date(dateString);
+                try {
+                    // get data from columns
 
-                Vector v = new Vector();
+                    int id = rsAll.getInt(ID_COL);
+                    String className = rsAll.getString(CLASS_NAME_COL);
+                    int classCode = rsAll.getInt(CLASS_CODE_COL);
+                    String assignment = rsAll.getString(ASSIGNMENT_COL);
+                    String dateString = rsAll.getString(DUE_DATE_COL);
 
-                // add assignment to vector of assignments
-                v.add(id);
-                v.add(className);
-                v.add(classCode);
-                v.add(assignment);
-                v.add(date);
+                    // convert date string to Date
+                    DateFormat format = new SimpleDateFormat("MM-dd-yyyy");
+                    Date date = format.parse(dateString);
 
-                // add vector of assignment to allAssignments vector
-                allAssignments.add(v);
+                    Vector v = new Vector();
+
+                    // add assignment to vector of assignments
+                    v.add(id);
+                    v.add(className);
+                    v.add(classCode);
+                    v.add(assignment);
+                    v.add(date);
+
+                    // add vector of assignment to allAssignments vector
+                    allAssignments.add(v);
+                } catch (ParseException pe) {
+                    pe.printStackTrace();
+                }
 
             }
 
@@ -114,14 +124,16 @@ public class PlannerDB {
         try (Connection connection = DriverManager.getConnection(DB_URL);
              PreparedStatement preparedStatement = connection.prepareStatement(addAssignmentSql)) {
 
+            SimpleDateFormat formatter = new SimpleDateFormat("MM-dd-YYYY");
+            String dateString = formatter.format(assignment.getDate());
+
             // prepared statements
             preparedStatement.setString(1, assignment.getClassName());
             preparedStatement.setInt(2, assignment.getClassCode());
             preparedStatement.setString(3, assignment.getAssignment());
-            preparedStatement.setString(4, assignment.getDate().toString()); // convert date to string format
+            preparedStatement.setString(4, dateString); // convert date to string format
 
             preparedStatement.executeUpdate();
-
 
         } catch (SQLException e) {
             throw new RuntimeException(e);

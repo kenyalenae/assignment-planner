@@ -111,17 +111,17 @@ public class PlannerGUI extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                try {
+//                try {
                     // get user input
                     String name = className.getText();
                     String classAssignment = assignment.getText();
                     Date dueDate = (Date) dueDateSpinner.getValue();
                     int code;
 
-                    // TODO - convert date to MM-DD-YYYY format before adding
-                    DateFormat newFormat = new SimpleDateFormat("MM-dd-yyyy");
-                    String date = newFormat.format(dueDate);
-                    Date updatedDate = newFormat.parse(date);
+//                    // TODO - convert date to MM-DD-YYYY format before adding
+//                    DateFormat newFormat = new SimpleDateFormat("MM-dd-YYYY");
+//                    String date = newFormat.format(dueDate);
+//                    Date updatedDate = newFormat.parse(date);
 
                     // if name or assignment field are empty, show error dialog
                     if (name.isEmpty() || classAssignment.isEmpty()) {
@@ -144,18 +144,22 @@ public class PlannerGUI extends JFrame {
                         return;
                     }
 
+                    className.setText("");
+                    classCode.setText("");
+                    assignment.setText("");
+
                     // create assignment using user entered information
-                    Assignment assignmentRecord = new Assignment(name, code, classAssignment, updatedDate);
+                    Assignment assignmentRecord = new Assignment(name, code, classAssignment, dueDate);
                     // add assignment to database
                     controller.addAssignment(assignmentRecord);
                     // update JTable
                     updateTable();
 
-                    System.out.println(updatedDate);
+                    System.out.println(assignmentRecord);
 
-                } catch (ParseException p) {
-                    p.printStackTrace();
-                }
+//                } catch (ParseException p) {
+//                    p.printStackTrace();
+//                }
 
             }
         });
